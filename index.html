@@ -1,0 +1,152 @@
+<html ng-app>
+	<head>
+		<style>
+			body{
+				background-image:url('Pres-Countdown-Clock-for-ISC-West-2014.png');
+				background-size:cover;
+			}
+		</style>
+		<script src="jquery.js"></script>
+		<script src="angular.js"></script>
+	<link href="bootstrap.css" rel="stylesheet">
+	<script src="bootstrap.js"></script>
+	<script>
+var myApp = angular.module('myApp', []);
+
+function MyCtrl($scope, $timeout) {
+    $scope.minutes = 1;
+    $scope.seconds = 1;
+    $scope.militime = (($scope.minutes*60000)+($scope.seconds*1000));
+
+    $scope.timeleft = "The next presentation begins in:";
+     $scope.takeaseat = "Please take a seat";
+    $scope.settings = {
+        running:false,
+        timeout:false
+    }
+    $scope.fulltime = 0;
+    
+    $scope.stop = function() {
+    $scope.settings.running = false;
+     $scope.settings.timeout = false;
+    }
+    
+    $scope.start = function(){
+    	$scope.militime = (($scope.minutes*60000)+($scope.seconds*1000));
+$scope.settings.running = true;
+        $scope.countdown();
+    }
+    
+    $scope.countdown = function myhandler() {
+    	
+    	console.log($scope.settings.running);
+        if($scope.settings.running == true){
+        if ($scope.militime == 0) {
+            console.log('end!');
+            $scope.settings.timeout = true;
+            $scope.settings.running = false;
+            return;
+        } else {
+                $scope.militime = $scope.militime-1000;
+        }
+        $timeout(myhandler, 1000);
+        }
+       return;
+    }
+}
+
+
+
+
+	</script>
+	
+	</head>
+ <!-- Body tag augmented with ngController directive  -->
+ <body>
+ 	<style>
+ 		 body, html {
+    height: 100%;
+}
+body{
+	overflow:hidden;
+}
+
+
+.container {
+    margin-top: 10px;
+    display: table;
+    height: 100%;
+}
+.row {
+    min-width: 500px;
+    display: table-cell;
+    height: 100%;
+    vertical-align:middle;
+}
+
+h1{
+	font-size:10em;
+	color:#ffffff;
+}
+h2{
+	color:#ffffff;
+}
+ 	</style>
+<div class="container" ng-controller="MyCtrl">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-3  text-center">
+			<div class="row" ng-hide="settings.running || settings.timeout">
+				
+				<div class="col-md-2">
+									<input type="text" ng-model="minutes" class="form-control">
+
+				</div>
+				<div class="col-md-2">
+									<input type="text" ng-model="seconds" class="form-control">
+
+				</div>
+				
+				
+				<button type="button" ng-click="start()" class="btn btn-default">Start</button>
+    <button type="button" ng-click="stop()" class="btn btn-default">Stop</button>
+			</div><br>
+						<div class="row" ng-hide="settings.running || settings.timeout">
+							<div class="col-md-12">
+									<input type="text" ng-model="timeleft" class="form-control">
+				</div>
+</div><br>
+<div class="row" ng-hide="settings.running || settings.timeout">
+							<div class="col-md-12">
+									<input type="text" ng-model="takeaseat" class="form-control">
+				</div>
+</div>
+			<div class="row"  ng-hide="!settings.running || settings.timeout"  ng-click="stop()" >
+
+				<div class="col-md-12 timeleft  text-center">
+					<h2>{{timeleft}}</h2>
+									<h1 style="display:inline-block">{{militime | date:'mm:ss'}}</h1>
+				
+				</div>
+				 
+			</div>
+			<div class="row"  ng-hide="settings.running || !settings.timeout"  ng-click="stop()" >
+
+				<div class="col-md-12 timeleft  text-center">
+					<span style="font-size:50px; color:#ffffff;">{{takeaseat}}</span>
+				</div>
+				 
+			</div>
+			 <table>
+       
+    </table>
+    
+    
+    
+   
+		</div>
+	</div>
+   
+    
+</div>
+ </body>
+</html>
